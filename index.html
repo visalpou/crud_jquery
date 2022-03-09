@@ -55,6 +55,7 @@
         $('body').on('click','.tbl_btn_cancel',function(){
             $('.popup').remove();
         })
+        //Edit
         $('body').on('click','#btn_save',function(){
             var txt_id =  $('#txt_id');
             var txt_name = $('#txt_name');
@@ -73,6 +74,7 @@
                 tbl_data.find('tr:eq('+trInd+') td:eq(1)').text(txt_name.val());
                 tbl_data.find('tr:eq('+trInd+') td:eq(2)').text(txt_subject.val());
                 tbl_data.find('tr:eq('+trInd+') td:eq(3)').text(txt_score.val());
+                $('.popup').remove();
             }
             //Total
             total();

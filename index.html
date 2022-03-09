@@ -9,6 +9,7 @@
     <title>Crud</title>
 </head>
 <body>
+    <h1 style="text-align: center;">Student List</h1>
     <table style="width: 100%;" id="tbl_data">
         <input type="button" value="Add New" id="btn_add">
         <tr>
@@ -21,13 +22,13 @@
         <tr style="text-align: center;">
             <td colspan="3">Total</td>
             <td id="txt_total"></td>
-        </tr>  
-       
+        </tr>    
     </table>
     
 </body>
 <script>
     $(document).ready(function(){
+        var trInd;
         var btn_add = '<div class="btn_cancel">X</div>'
         var tbl = '<div class="tbl">'
                   +'<label for="">ID</label>'
@@ -46,6 +47,7 @@
         var tbl_data = $('#tbl_data');
         $('#btn_add').click(function(){
             $('body').append(popup);
+            optsave = 0;
         })
         $('body').on('click','.btn_cancel',function(){
             $('.popup').remove();
@@ -58,26 +60,43 @@
             var txt_name = $('#txt_name');
             var txt_subject = $('#txt_subject');
             var txt_score = $('#txt_score');
-            var tr = '<tr style="text-align:center;">' + '<td>'+txt_id.val()+'</td>' + '<td>'+txt_name.val()+'</td>' + '<td>'+txt_subject.val()+'</td>' + '<td class="score">'+txt_score.val()+'</td>'+ '<td><input class="btn_delete" type="button" value="delete"> <input class="btn_edit" type="button" value="edit"></td>'+ '</tr>';
-            tbl_data.find('tr:eq(0)').after(tr);
-            txt_id.val('');
-            txt_name.val('');
-            txt_score.val('');
-            txt_subject.val('');
-            txt_id.focus();
+            if(optsave == 0){
+                var tr = '<tr style="text-align:center;">' + '<td>'+txt_id.val()+'</td>' + '<td>'+txt_name.val()+'</td>' + '<td>'+txt_subject.val()+'</td>' + '<td class="score">'+txt_score.val()+'</td>'+ '<td><input class="btn_delete" type="button" value="delete"> <input class="btn_edit" type="button" value="edit"></td>'+ '</tr>';
+                tbl_data.find('tr:eq(0)').after(tr);
+                txt_id.val('');
+                txt_name.val(''); 
+                txt_subject.val('');
+                txt_score.val('');
+                txt_id.focus();
+            }else{
+                tbl_data.find('tr:eq('+trInd+') td:eq(0)').text(txt_id.val());
+                tbl_data.find('tr:eq('+trInd+') td:eq(1)').text(txt_name.val());
+                tbl_data.find('tr:eq('+trInd+') td:eq(2)').text(txt_subject.val());
+                tbl_data.find('tr:eq('+trInd+') td:eq(3)').text(txt_score.val());
+            }
             //Total
             total();
-            // Delete
-            $('body').on('click','.btn_delete',function(){
-                $(this).parents('tr').remove();
-                total();
-            });
-            // Edit
-            $('body').on('click','.btn_edit',function(){
-                $('body').append(popup);    
-            });
-           
-        })
+        });
+         // Delete
+        $('body').on('click','.btn_delete',function(){
+            $(this).parents('tr').remove();
+            total();
+        });
+        // Edit
+        $('body').on('click','.btn_edit',function(){
+            optsave = 1;
+            var tr = $(this).parents('tr');
+            var id = tr.find('td:eq(0)').text();
+            var name = tr.find('td:eq(1)').text();
+            var subject = tr.find('td:eq(2)').text();
+            var score = tr.find('td:eq(3)').text();
+            $('body').append(popup);    
+            $('#txt_id').val(id);
+            $('#txt_name').val(name);
+            $('#txt_subject').val(subject);
+            $('#txt_score').val(score);
+            trInd = tr.index();
+        });
         //funtion total
         function total(){
             var score = tbl_data.find('.score');

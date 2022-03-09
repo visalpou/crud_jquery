@@ -1,5 +1,6 @@
 table tr th{
-    color: gray;
+    color: white;
+    background-color: black;
     border: 1px solid gray;
 }
 table tr td{
